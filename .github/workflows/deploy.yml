@@ -11,57 +11,25 @@ on:
       - '!.github/workflows/deploy.yml'
   workflow_dispatch:
 
-env:
-  CLOUDFLARE_PROJECT_NAME: suikompany
-
 jobs:
-  build:
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    outputs:
-      artifact: ${{ steps.upload-artifact.outputs.artifact-id }}
-    steps:
-      - name: Checkout your repository using git
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build site
-        run: pnpm build
-      - name: Upload artifact
-        id: upload-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: grabbable-eyewear
-          path: dist/*
-
   deploy:
-    permissions:
-      contents: read
-      deployments: write
-    needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     environment:
       name: cloudflare-pages
       url: ${{ steps.deployment.outputs.deployment-url }}
     steps:
-      - name: Download built files
-        uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          artifact-ids: ${{needs.build.outputs.artifact}}
-          path: grabbable-eyewear
-      - name: Deploy to Cloudflare Pages
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm build
+      - name: Deploy
         id: deployment
         uses: cloudflare/wrangler-action@v3
         with:

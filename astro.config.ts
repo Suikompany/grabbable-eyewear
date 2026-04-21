@@ -7,6 +7,7 @@ export default defineConfig({
   root: '.',
   base: base,
   trailingSlash: 'always',
+  outDir: `dist/${base}`, // Cloudflare Workers の Routes でベースパスを指定しているためビルド先もベースパスを合わせる
   site: 'https://suikompany.hiromelon.dev',
   integrations: [
     starlight({
