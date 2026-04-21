@@ -65,6 +65,5 @@ jobs:
         id: deployment
         uses: cloudflare/wrangler-action@v3
         with:
-          command: pages deploy grabbable-eyewear --project-name=${{ env.CLOUDFLARE_PROJECT_NAME }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

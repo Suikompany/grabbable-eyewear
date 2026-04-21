@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "grabbable-eyewear-doc",
+  "compatibility_date": "2026-04-21",
+
+  "workers_dev": false,
+  "route": "suikompany.hiromelon.dev/grabbable-eyewear*",
+
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+
+  "dev": {
+    "ip": "127.0.0.1"
+  }
+}
